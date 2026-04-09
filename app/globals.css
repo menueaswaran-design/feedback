@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f1f5f9;
+  --fg: #0f172a;
+}
+
+.dark {
+  --bg: #020617;
+  --fg: #f8fafc;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-heading), sans-serif;
+}
+
+* {
+  border-color: rgb(148 163 184 / 0.2);
+}
+
+pre {
+  font-family: var(--font-mono), monospace;
+}
