@@ -8,6 +8,13 @@ export const dynamic = "force-dynamic";
 export default async function AdminDashboardPage() {
   await connectDB();
   const forms = await Form.find({}).sort({ createdAt: -1 }).lean();
+  const safeForms = forms.map((form) => ({
+    id: form?._id?.toString?.() || "",
+    title: form?.title || "Untitled Form",
+    description: form?.description || "",
+    fieldCount: Array.isArray(form?.fields) ? form.fields.length : 0,
+    isPublished: !!form?.isPublished,
+  }));
 
   return (
     <div className="space-y-5">
@@ -22,8 +29,8 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {forms.map((form) => (
-          <article key={form._id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        {safeForms.map((form) => (
+          <article key={form.id || form.title} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="line-clamp-1 text-base font-bold">{form.title}</h2>
               <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${form.isPublished ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
@@ -31,19 +38,19 @@ export default async function AdminDashboardPage() {
               </span>
             </div>
             <p className="line-clamp-2 text-sm text-slate-600 dark:text-slate-300">{form.description || "No description"}</p>
-            <p className="mt-3 text-xs text-slate-500">Fields: {form.fields.length}</p>
+            <p className="mt-3 text-xs text-slate-500">Fields: {form.fieldCount}</p>
 
             <div className="mt-4 flex flex-wrap gap-2 text-xs">
-              <Link href={`/admin/forms/${form._id}/edit`} className="rounded-full border px-3 py-1.5">Edit</Link>
-              <Link href={`/admin/forms/${form._id}/responses`} className="rounded-full border px-3 py-1.5">Responses</Link>
-              <Link href={`/form/${form._id}`} className="rounded-full border px-3 py-1.5">Open</Link>
-              <FormCardActions id={form._id.toString()} isPublished={form.isPublished} />
+              <Link href={`/admin/forms/${form.id}/edit`} className="rounded-full border px-3 py-1.5">Edit</Link>
+              <Link href={`/admin/forms/${form.id}/responses`} className="rounded-full border px-3 py-1.5">Responses</Link>
+              <Link href={`/form/${form.id}`} className="rounded-full border px-3 py-1.5">Open</Link>
+              <FormCardActions id={form.id} isPublished={form.isPublished} />
             </div>
           </article>
         ))}
       </div>
 
-      {!forms.length ? (
+      {!safeForms.length ? (
         <div className="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-600 dark:border-slate-700 dark:text-slate-300">
           No forms yet. Start by creating your first feedback form.
         </div>
