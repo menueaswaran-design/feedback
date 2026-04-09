@@ -64,7 +64,23 @@ export async function GET(_, { params }) {
     });
   }
 
-  return NextResponse.json({ responses, analytics });
+  return NextResponse.json({
+    responses,
+    analytics,
+    form: form
+      ? {
+          _id: form._id?.toString?.() || id,
+          title: form.title || "",
+          fields: Array.isArray(form.fields)
+            ? form.fields.map((f) => ({
+                key: f.key,
+                label: f.label,
+                type: f.type,
+              }))
+            : [],
+        }
+      : null,
+  });
 }
 
 export async function POST(req, { params }) {

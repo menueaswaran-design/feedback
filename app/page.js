@@ -41,14 +41,12 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="flex gap-3">
-              <Link
-                href="/admin/login"
-                className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-bold text-white dark:bg-cyan-500 dark:text-slate-950"
-              >
-                Admin Login
-              </Link>
-            </div>
+            <Link
+              href="/admin/login"
+              className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-slate-700 dark:bg-cyan-500 dark:text-slate-950 dark:hover:bg-cyan-400"
+            >
+              Login
+            </Link>
           </div>
         </section>
 
@@ -69,20 +67,18 @@ export default async function Home() {
               {publishedForms.map((form) => (
                 <article
                   key={form.id}
-                  className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-950"
+                  className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-700 dark:from-slate-900 dark:to-slate-950"
                 >
+                  <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-cyan-200/40 blur-2xl transition group-hover:bg-cyan-300/50 dark:bg-cyan-900/30" />
+
                   <h3 className="line-clamp-2 text-base font-extrabold">{form.title}</h3>
                   <p className="mt-2 line-clamp-3 text-sm text-slate-600 dark:text-slate-300">
                     {form.description || "No description provided."}
                   </p>
-                  <p className="mt-3 text-xs text-slate-500">Fields: {form.fieldCount}</p>
-                  <p className="text-xs text-slate-500">
-                    Created: {new Date(form.createdAt).toLocaleDateString()}
-                  </p>
 
                   <Link
                     href={`/form/${form.id}`}
-                    className="mt-4 inline-flex rounded-full bg-emerald-600 px-4 py-2 text-xs font-bold text-white"
+                    className="mt-5 inline-flex rounded-full bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-emerald-600/25 transition hover:bg-emerald-500"
                   >
                     Fill Feedback
                   </Link>
